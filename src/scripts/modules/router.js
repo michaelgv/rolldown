@@ -28,7 +28,16 @@ export default class Router
         })
         if(this._current_route === null)
         {
-            this._default_route.component()
+            if(typeof this._default_route.component === 'function') // exported class
+            {
+                let componentNode = new this._default_route.component;
+                typeof componentNode.willRender !== 'undefined' ? componentNode.willRender() : '';
+                componentNode.render()
+            }
+            else
+            {
+                this._default_route.component()
+            }
         }
     }
     findDefault()
