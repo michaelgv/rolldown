@@ -21,14 +21,25 @@ export default class Router
         this._routes.forEach((route) => {
             if(route.route === route)
             {
-                route.component() // trigger route component
+                if(typeof route.component === 'function' && typeof route.component.getDescription !== 'undefined')
+                {
+                    alert('here')
+                    let componentNode = new route.component();
+                    typeof componentNode.willRender !== 'undefined' ? componentNode.willRender() : '';
+                    componentNode.render()
+                }
+                else
+                {
+                    alert('component func')
+                    route.component() // trigger route component
+                }
                 this._current_route = route
                 return
             }
         })
         if(this._current_route === null)
         {
-            if(typeof this._default_route.component === 'function') // exported class
+            if(typeof this._default_route.component === 'function' && typeof this._default_route.component.getDescription !== 'undefined') // exported class
             {
                 let componentNode = new this._default_route.component;
                 typeof componentNode.willRender !== 'undefined' ? componentNode.willRender() : '';
