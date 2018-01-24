@@ -18,22 +18,20 @@ export default class Router
     runRoute(route)
     {
         // task: find route!
-        this._routes.forEach((route) => {
-            if(route.route === route)
+        this._routes.forEach((inroute) => {
+            if(inroute.route === route)
             {
-                if(typeof route.component === 'function' && typeof route.component.getDescription !== 'undefined')
+                if(typeof inroute.component === 'function' && typeof inroute.component.getDescription !== 'undefined')
                 {
-                    alert('here')
-                    let componentNode = new route.component();
+                    let componentNode = new inroute.component();
                     typeof componentNode.willRender !== 'undefined' ? componentNode.willRender() : '';
                     componentNode.render()
                 }
                 else
                 {
-                    alert('component func')
-                    route.component() // trigger route component
+                    inroute.component() // trigger route component
                 }
-                this._current_route = route
+                this._current_route = inroute
                 return
             }
         })
