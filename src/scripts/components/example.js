@@ -17,6 +17,7 @@ class Example extends RxComponent
     genExampleTemplate()
     {
         let topNode = document.createElement("div")
+        topNode.dataset.parentvrep = "#root"
         topNode.id = "examplecontainer"
         topNode.classList.add('container')
         let paragraph = document.createElement("p")

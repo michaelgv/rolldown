@@ -86,9 +86,9 @@ export default class RxComponent
 		this.template = templateVREP
 		this.templateVREP = this.template.cloneNode(true)
 		this.shadow_parent = null
-		if(typeof templateVREP.dataset !== 'undefined' && templateVREP.dataset.parentvrep !== 'undefined')
+		if(typeof this.template.dataset !== 'undefined' && this.template.dataset.parentvrep !== 'undefined')
 		{
-			this.shadow_parent = templateVREP.dataset.parentvrep
+			this.shadow_parent = this.template.dataset.parentvrep
 		}
 		if(this.shadow_parent !== null)
 		{
