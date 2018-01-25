@@ -4,7 +4,6 @@
  * -----------------
  */
 
-import debug from 'debug';
 import router from './modules/router'
 import routes from './modules/config/routes'
 
@@ -20,15 +19,15 @@ const _env = {
     },
 }
 
-// Enable logging with debug if development, otherwise use blank function
-if(_env.environment !== "production")
+// Create commiter window object
+window.gcommiter = {
+    modules: [],
+    states: []
+}
+// Override log if we're in production
+if(_env.environment !== "development")
 {
-    log = debug(_env.debug.title)
-    debug.enable('*');
-    log('--- Development ---')
-    log('--- Environment ---')
-} else {
-    debug.disable()
+    log = (mesg) => {}
 }
 
 log('Starting router...')

@@ -1,10 +1,13 @@
-const CommiterObject = {
-    states: [],
-    modules: []
-}
-export default CommiterObject
 export default class Commiter
 {
+    commiterObject()
+    {
+        const CommiterObject = {
+            states: [],
+            modules: []
+        }
+        return CommiterObject
+    }
     constructor(origin, scope)
     {
         if(typeof scope === 'undefined')
@@ -12,25 +15,20 @@ export default class Commiter
             let scope = "gcommiter"
         }
         this.scope = scope
-        if(typeof window[scope] === 'undefined')
-        {
-            window[this.scope] = CommiterObject
-        }
         this.addToScope(origin)
     }
 
     commit(action, value, origin)
     {
-        let win = window[this.scope]
         let scope = this.scope
-        if(typeof win.states[action] === 'undefined')
+        if(typeof window.gcommiter.states[action] === 'undefined')
         {
             throw new TypeError(`You cannot commit to ${action} as it is not available in the "${scope}" scope`)
         }
-        if(typeof win.scopes[action] !== 'undefined')
+        if(typeof window.gcommiter.states[action] !== 'undefined')
         {
-            win.scopes[action]['bindValue'] = value
-            this.shouldUpdate(win[action])
+            window.gcommiter.states[action]['bindValue'] = value
+            this.shouldUpdate(window.gcommiter.states[action])
         }
         else
         {
@@ -40,8 +38,7 @@ export default class Commiter
 
     createCommit(action, defaultValue, originalBinder)
     {
-        let win = window[this.scope]
-        win.states.push({
+        win.gcommiter.states.push({
             bindAction: action,
             bindValue: defaultValue,
             vrep: null,
@@ -51,8 +48,7 @@ export default class Commiter
 
     shouldUpdate(action)
     {
-        let win = window[scope]['modules']
-        win.forEach((stateModule) => {
+        window.gcommiter.modules.forEach((stateModule) => {
             if(typeof stateModule['eventNotice'] !== 'undefined')
             {
                 stateModule['eventNotice'](action)
@@ -62,8 +58,6 @@ export default class Commiter
 
     addToScope(origin)
     {
-        let scope = this.scope
-        let win = window[scope]
-        win.modules.push(origin)
+        window.gcommiter.modules.push(origin)
     }
 }

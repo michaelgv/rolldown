@@ -1,3 +1,5 @@
+import diffDOM from 'diff-dom'
+
 export default class RxComponent
 {
 	static getDescription()
@@ -11,6 +13,7 @@ export default class RxComponent
 	{
 		this.state = {}
 		this.vrep = null
+		this.changelog = []
 	}
 
 	createState(stateName, stateValue, stateBinder)
@@ -40,6 +43,25 @@ export default class RxComponent
 		}
 	}
 
+	qSelect(tag, live)
+	{
+		this.templateVREP.querySelector('#ptest').dataset.testid = "test"
+		if(typeof live !== 'undefined' && live)
+		{
+			this.changelog.push({ sel: tag })
+			return this.template.querySelector(tag)
+		}
+		this.changelog.push({ sel: tag })
+		return this.templateVREP.querySelector(tag)
+	}
+
+	qCommit()
+	{
+		let dd = new diffDOM()
+		let diff = dd.diff(this.template, this.templateVREP)
+		dd.apply(this.template, diff)
+	}
+
 	setState(stateProp, stateVal)
 	{
 		if(typeof this.state[stateProp] === 'undefined')
@@ -62,10 +84,15 @@ export default class RxComponent
 	loadTemplate(templateVREP)
 	{
 		this.template = templateVREP
-		this.shadow_parent = templateVREP.dataset.parentvrep || null
+		this.templateVREP = this.template.cloneNode(true)
+		this.shadow_parent = null
+		if(typeof templateVREP.dataset !== 'undefined' && templateVREP.dataset.parentvrep !== 'undefined')
+		{
+			this.shadow_parent = templateVREP.dataset.parentvrep
+		}
 		if(this.shadow_parent !== null)
 		{
-			this.shadow_parent = document.querySelector(this.shadow_parent) || null
+			this.shadow_parent = document.querySelector(this.shadow_parent)
 		}
 		else
 		{
@@ -99,6 +126,10 @@ export default class RxComponent
 
 	render()
 	{
+		if(typeof this.shadow_parent === 'undefined' || this.shadow_parent === null)
+		{
+			this.shadow_parent = document.body || document.getElementsByTagName('body')[0]
+		}
 		this.template = this.shadow_parent.appendChild(this.template) // set 1-1 mapped binding, so we can change in real time, without touching dom directly on selectors, this helps abstraction
 		if(typeof window.committer !== 'undefined')
 		{

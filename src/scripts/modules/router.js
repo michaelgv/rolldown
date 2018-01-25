@@ -15,6 +15,24 @@ export default class Router
     {
         this._routes = routes
     }
+    runDefaultRoute()
+    {
+        let defRoute = this._default_route
+        if(defRoute)
+        {
+            if(typeof defRoute.component === 'function' && typeof defRoute.component.getDescription !== 'undefined')
+            {
+                let componentNode = new defRoute.component()
+                typeof componentNode.willRender !== 'undefined' ? componentNode.willRender() : '';
+                componentNode.render()
+            }
+            else
+            {
+                defRoute.component()
+            }
+            this._current_route = defRoute
+        }
+    }
     runRoute(route)
     {
         // task: find route!
@@ -65,6 +83,10 @@ export default class Router
             let hash = window.location.hash
             hash = hash.replace(/\#\//g, '')
             this.runRoute(hash)
+        }
+        else
+        {
+            this.runDefaultRoute()
         }
     }
 }
