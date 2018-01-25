@@ -11,7 +11,14 @@ class Example extends RxComponent
         setTimeout(() => {
             this.qSelect('#ptest > span').innerText = " ..... Changed after 1 seconds successfully"
             this.qCommit()
+            this.commiter.createCommit('test', 'metoo', this)
+            setTimeout(() => this.commiter.commit('test', 'newtest', this), 2000)
         }, 1000)
+    }
+
+    eventtest()
+    {
+        alert('eventtest called')
     }
 
     genExampleTemplate()

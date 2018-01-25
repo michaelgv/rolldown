@@ -38,7 +38,7 @@ export default class Commiter
 
     createCommit(action, defaultValue, originalBinder)
     {
-        win.gcommiter.states.push({
+        window.gcommiter.states.push({
             bindAction: action,
             bindValue: defaultValue,
             vrep: null,
@@ -49,9 +49,9 @@ export default class Commiter
     shouldUpdate(action)
     {
         window.gcommiter.modules.forEach((stateModule) => {
-            if(typeof stateModule['eventNotice'] !== 'undefined')
+            if(typeof stateModule.eventNotice !== 'undefined')
             {
-                stateModule['eventNotice'](action)
+                stateModule.eventNotice(action)
             }
         })
     }

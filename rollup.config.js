@@ -20,6 +20,6 @@ export default {
             browser: true
         }),
         commonjs(),
-        uglify()
+        // uglify()
     ],
 }

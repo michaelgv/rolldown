@@ -100,6 +100,14 @@ export default class RxComponent
 		}
 	}
 
+	eventNotice(details)
+	{
+		if(typeof this['event'+details.bindAction])
+		{
+			this['event'+details.bindAction](details)
+		}
+	}
+
 	bindStateToVrep(stateAction, selector)
 	{
 		if(typeof this.template === 'undefined')
